@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Алексей Муравьёв](https://up.htmlacademy.ru/javascript/20/user/1159299).
-* Наставник: `Неизвестно`.
+* Наставник: [Иван Патрицкий](https://htmlacademy.ru/profile/id1218325).
 
 ---
 
