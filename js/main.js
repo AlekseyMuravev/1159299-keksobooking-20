@@ -4,8 +4,8 @@ var HEADER = ['Привет', 'Добрый день', 'Добро пожало�
 var TYPE_HOTEL = ['palace', 'flat', 'house', 'bungalo'];
 var TIME_CHEC = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var DESCRIPTION = ['Хороший отель', 'Чисты отель', 'Дорогой отель', 'Рядом с городом', 'Рядом с морем', 'Рядом с парком', 'Отель с аквапарком', 'Отель с кинотеатром']
-var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg']
+var DESCRIPTION = ['Хороший отель', 'Чисты отель', 'Дорогой отель', 'Рядом с городом', 'Рядом с морем', 'Рядом с парком', 'Отель с аквапарком', 'Отель с кинотеатром'];
+var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var widthMap = document.querySelector('.map').offsetWidth;
 var widthMapPin = document.querySelector('.map__pin').offsetWidth;
 var heightMapPin = document.querySelector('.map__pin').offsetHeight;
@@ -17,12 +17,12 @@ var createAdvertisements = function () {
   for (var i = 0; i < 8; i++) {
     advertisements.push(createAdvertisement(i));
   }
-}
+};
 
 // случайное число из диапазона
 var getRandomArbitrary = function (min, max) {
   return Math.random() * (max - min) + min;
-}
+};
 
 // создаем объявление
 var createAdvertisement = function (index) {
@@ -53,14 +53,16 @@ var createAdvertisement = function (index) {
   offer.description = DESCRIPTION[Math.round(getRandomArbitrary(0, DESCRIPTION.length - 1))];
   offer.photos = shuffle(PHOTOS).slice(Math.round(getRandomArbitrary(0, PHOTOS.length - 1)));
 
-  return advertisement
-}
+  return advertisement;
+};
 
 // функция перемешивания массива
 function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
+  var currentIndex = array.length;
+  var temporaryValue;
+  var randomIndex;
 
-  while (0 !== currentIndex) {
+  while (currentIndex !== 0) {
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
 
@@ -74,7 +76,7 @@ function shuffle(array) {
 // число для фотографии
 var arayAutor = function (index) {
   return 'img/avatars/user0' + (index + 1) + '.png';
-}
+};
 
 createAdvertisements();
 
@@ -92,8 +94,7 @@ var fillinkPinMap = function (pinMap) {
   pinsMap.querySelector('img').src = pinMap.autor.avatar;
   pinsMap.querySelector('img').alt = pinMap.offer.title;
   mapPins.appendChild(pinsMap);
-  console.log(mapPins)
-}
+};
 
 for (var i = 0; i < advertisements.length; i++) {
   fillinkPinMap(advertisements[i]);
