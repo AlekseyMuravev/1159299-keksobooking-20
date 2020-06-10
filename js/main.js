@@ -10,11 +10,6 @@ var widthMap = document.querySelector('.map').offsetWidth;
 var widthMapPin = document.querySelector('.map__pin').offsetWidth;
 var heightMapPin = document.querySelector('.map__pin').offsetHeight;
 
-console.log(heightMapPin)
-
-var map = document.querySelector('.map');
-map.classList.remove('map--faded');
-
 var advertisements = [];
 
 // массив объявлений
@@ -46,7 +41,7 @@ var createAdvertisement = function (index) {
 
   advertisement.offer = offer;
 
-  offer.tite = HEADER[index];
+  offer.title = HEADER[index];
   offer.address = location.x + ', ' + location.y;
   offer.price = (Math.round(getRandomArbitrary(1000, 5000) / 10)) * 10;
   offer.type = TYPE_HOTEL[Math.round(getRandomArbitrary(0, TYPE_HOTEL.length - 1))];
@@ -57,7 +52,6 @@ var createAdvertisement = function (index) {
   offer.features = shuffle(FEATURES).slice(Math.round(getRandomArbitrary(0, FEATURES.length - 1)));
   offer.description = DESCRIPTION[Math.round(getRandomArbitrary(0, DESCRIPTION.length - 1))];
   offer.photos = shuffle(PHOTOS).slice(Math.round(getRandomArbitrary(0, PHOTOS.length - 1)));
-
 
   return advertisement
 }
@@ -77,46 +71,43 @@ function shuffle(array) {
   return array;
 }
 
-
 // число для фотографии
 var arayAutor = function (index) {
-  return 'img / avatars / user0' + (index + 1);
+  return 'img/avatars/user0' + (index + 1) + '.png';
 }
-
 
 createAdvertisements();
 
-console.log(advertisements)
+var map = document.querySelector('.map');
+map.classList.remove('map--faded');
 
+var pinTemplate = document.querySelector('#pin').content;
+var mapPins = document.querySelector('.map__pins');
 
-
-var popupTemplate = document.querySelector('#card').content.querySelector('.popup');
-
-var fillingAdvertisement = function (hotel) {
-  var hotels = popupTemplate.cloneNode(true);
-  hotels.querySelector('.popup__avatar').textContent = hotel.autor.avatar;
-  hotels.querySelector('.popup__title').textContent = hotel.offer.title;
-  hotels.querySelector('.popup__text--address').textContent = hotel.offer.address;
-  hotels.querySelector('.popup__text--price').textContent = hotel.offer.price;
-  hotels.querySelector('.popup__type').textContent = hotel.offer.type;
-  hotels.querySelector('.popup__text--capacity').textContent = hotel.offer.rooms + ' комнаты для ' + hotel.offer.guests + ' гостей';
-  hotels.querySelector('.popup__text--time').textContent = 'Заезд после ' + hotel.offer.checkin + ', выезд до ' + hotel.offer.checkout;
-  hotels.querySelector('.popup__description').textContent = hotel.offer.description;
-  hotels.querySelector('.popup__photo').textContent = hotel.offer.photos;
+// функция для рендеринга меток на карте
+var fillinkPinMap = function (pinMap) {
+  var pinsMap = pinTemplate.cloneNode(true);
+  pinsMap.querySelector('.map__pin').style.left = pinMap.location.x + 'px';
+  pinsMap.querySelector('.map__pin').style.top = pinMap.location.y + 'px';
+  pinsMap.querySelector('img').src = pinMap.autor.avatar;
+  pinsMap.querySelector('img').alt = pinMap.offer.title;
+  mapPins.appendChild(pinsMap);
+  console.log(mapPins)
 }
 
-console.log(advertisements[0].offer.photos)
+for (var i = 0; i < advertisements.length; i++) {
+  fillinkPinMap(advertisements[i]);
+}
 
-// массив advertisements = [
-//   объект advertisement {
-//     autor: {
-//       avatar: значение
-//     },
-//     offer: {
-//       avatar: значение
-//     },
-//     location: {
-//       avatar: значение
-//     }
-//   }
-// ]
+// var fillingAdvertisement = function (hotel) {
+//     var hotels = popupTemplate.cloneNode(true);
+//     hotels.querySelector('.popup__avatar').textContent = hotel.autor.avatar;
+//     hotels.querySelector('.popup__title').textContent = hotel.offer.title;
+//     hotels.querySelector('.popup__text--address').textContent = hotel.offer.address;
+//     hotels.querySelector('.popup__text--price').textContent = hotel.offer.price;
+//     hotels.querySelector('.popup__type').textContent = hotel.offer.type;
+//     hotels.querySelector('.popup__text--capacity').textContent = hotel.offer.rooms + ' комнаты для ' + hotel.offer.guests + ' гостей';
+//     hotels.querySelector('.popup__text--time').textContent = 'Заезд после ' + hotel.offer.checkin + ', выезд до ' + hotel.offer.checkout;
+//     hotels.querySelector('.popup__description').textContent = hotel.offer.description;
+//     hotels.querySelector('.popup__photo').textContent = hotel.offer.photos;
+// }
