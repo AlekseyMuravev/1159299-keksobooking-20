@@ -129,7 +129,8 @@ var fillingAdvertisement = function (hotel) {
 
   hotels.querySelector('.popup__text--capacity').textContent = hotel.offer.rooms + ' комнаты для ' + hotel.offer.guests + ' гостей';
   hotels.querySelector('.popup__text--time').textContent = 'Заезд после ' + hotel.offer.checkin + ', выезд до ' + hotel.offer.checkout;
-  // hotels.querySelector('.popup__features') = hotel.offer.features;
+
+
   hotels.querySelector('.popup__description').textContent = hotel.offer.description;
 
 
@@ -138,6 +139,9 @@ var fillingAdvertisement = function (hotel) {
   mapFiltersContainer.prepend(hotels);
 
 }
+var features = popupTemplate.querySelector('.popup__features');
+var feature = features.querySelectorAll('.popup__feature');
+console.log(feature)
 
 for (var i = 0; i < advertisements.length; i++) {
   fillingAdvertisement(advertisements[i]);
