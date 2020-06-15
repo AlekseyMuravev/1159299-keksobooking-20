@@ -7,8 +7,8 @@ var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditio
 var DESCRIPTION = ['Хороший отель', 'Чисты отель', 'Дорогой отель', 'Рядом с городом', 'Рядом с морем', 'Рядом с парком', 'Отель с аквапарком', 'Отель с кинотеатром'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var widthMap = document.querySelector('.map').offsetWidth;
-var widthMapPin = document.querySelector('.map__pin').offsetWidth;
-var heightMapPin = document.querySelector('.map__pin').offsetHeight;
+var WIDTH_MAP_PIN = document.querySelector('.map__pin').offsetWidth;
+var HEIGHT_MAP_PIN = document.querySelector('.map__pin').offsetHeight;
 
 var advertisements = [];
 
@@ -35,9 +35,8 @@ var createAdvertisement = function (index) {
 
   advertisement.location = location;
 
-  location.x = Math.round(getRandomArbitrary(0 + widthMapPin / 2, widthMap - widthMapPin / 2));
-  location.y = Math.round(getRandomArbitrary(130 + heightMapPin, 630));
-
+  location.x = Math.round(getRandomArbitrary(0 + WIDTH_MAP_PIN / 2, widthMap - WIDTH_MAP_PIN / 2));
+  location.y = Math.round(getRandomArbitrary(130 + HEIGHT_MAP_PIN, 630));
 
   advertisement.offer = offer;
 
@@ -81,7 +80,6 @@ var arayAutor = function (index) {
 createAdvertisements();
 
 var map = document.querySelector('.map');
-map.classList.remove('map--faded');
 
 var pinTemplate = document.querySelector('#pin').content;
 var mapPins = document.querySelector('.map__pins');
@@ -112,3 +110,80 @@ for (var i = 0; i < advertisements.length; i++) {
 //     hotels.querySelector('.popup__description').textContent = hotel.offer.description;
 //     hotels.querySelector('.popup__photo').textContent = hotel.offer.photos;
 // }
+
+
+var adForm = document.querySelector('.ad-form');
+var allFieldset = adForm.querySelectorAll('fieldset');
+
+var fieldsetDissablet = function () {
+  for (var j = 0; j < allFieldset.length; j++) {
+    allFieldset[j].setAttribute('disabled', 'disabled');
+  }
+};
+
+fieldsetDissablet();
+
+var activeForm = function () {
+  map.classList.remove('map--faded');
+  for (var j = 0; j < allFieldset.length; j++) {
+    allFieldset[j].removeAttribute('disabled');
+  }
+  adForm.classList.remove('ad-form--disabled');
+};
+
+var mapPinMain = document.querySelector('.map__pin--main');
+
+mapPinMain.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+  if (evt.which === 1) {
+    activeForm();
+  }
+});
+
+mapPinMain.addEventListener('keydown', function (evt) {
+  evt.preventDefault();
+  if (evt.key === 'Enter') {
+    activeForm();
+  }
+});
+
+var pinTop = parseInt(mapPinMain.style.top, 10) + HEIGHT_MAP_PIN + 22;
+var pinLeft = Math.round(parseInt(mapPinMain.style.left, 10) + WIDTH_MAP_PIN / 2);
+var addressFromPin = pinLeft + 'px' + ', ' + pinTop + 'px';
+var address = document.querySelector('input[name=address]');
+
+address.value = addressFromPin;
+
+var roomNumber = adForm.querySelector('select[name=rooms]');
+var capacity = adForm.querySelector('select[name=capacity]');
+var capacityValue = parseInt(capacity.value, 10);
+var roomNumberValue = parseInt(roomNumber.value, 10);
+
+// сравнение значений комнат и гостей
+var capacityFromRooms = function (roomValue, capacitysValue) {
+  if (capacitysValue > roomValue) {
+    capacity.setCustomValidity('колличество гостей больше, чем комнат');
+  } else if (capacitysValue === 0 && roomValue !== 100) {
+    capacity.setCustomValidity('колличество гостей больше, чем комнат');
+  } else if (capacitysValue !== 0 && roomValue === 100) {
+    capacity.setCustomValidity('колличество гостей больше, чем комнат');
+  } else {
+    capacity.setCustomValidity('');
+  }
+};
+
+capacityFromRooms(roomNumberValue, capacityValue);
+
+capacity.addEventListener('change', function () {
+  capacityValue = parseInt(capacity.value, 10);
+  roomNumberValue = parseInt(roomNumber.value, 10);
+
+  capacityFromRooms(roomNumberValue, capacityValue);
+});
+
+roomNumber.addEventListener('change', function () {
+  capacityValue = parseInt(capacity.value, 10);
+  roomNumberValue = parseInt(roomNumber.value, 10);
+
+  capacityFromRooms(roomNumberValue, capacityValue);
+});
