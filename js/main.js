@@ -94,10 +94,6 @@ var fillinkPinMap = function (pinMap) {
   mapPins.appendChild(pinsMap);
 };
 
-for (var i = 0; i < advertisements.length; i++) {
-  fillinkPinMap(advertisements[i]);
-}
-
 // var fillingAdvertisement = function (hotel) {
 //     var hotels = popupTemplate.cloneNode(true);
 //     hotels.querySelector('.popup__avatar').textContent = hotel.autor.avatar;
@@ -137,6 +133,10 @@ mapPinMain.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
   if (evt.which === 1) {
     activeForm();
+
+    for (var i = 0; i < advertisements.length; i++) {
+      fillinkPinMap(advertisements[i]);
+    }
   }
 });
 
@@ -144,6 +144,10 @@ mapPinMain.addEventListener('keydown', function (evt) {
   evt.preventDefault();
   if (evt.key === 'Enter') {
     activeForm();
+
+    for (var i = 0; i < advertisements.length; i++) {
+      fillinkPinMap(advertisements[i]);
+    }
   }
 });
 
