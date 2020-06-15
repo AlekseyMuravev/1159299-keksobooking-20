@@ -104,7 +104,6 @@ var popupTemplate = document.querySelector('#card').content.querySelector('.map_
 var mapFiltersContainer = document.querySelector('.map__filters-container');
 var popupPhotos = popupTemplate.querySelector('.popup__photos');
 var popupPhoto = popupPhotos.querySelector('.popup__photo');
-var newImg = document.createElement('img');
 
 // заполнение объявления
 var fillingAdvertisement = function (hotel) {
@@ -119,11 +118,9 @@ var fillingAdvertisement = function (hotel) {
     hotels.querySelector('.popup__type').textContent = 'Квартира';
   } else if (typeHouse === 'bungalo') {
     hotels.querySelector('.popup__type').textContent = 'Бунгало';
-  }
-  else if (typeHouse === 'house') {
+  } else if (typeHouse === 'house') {
     hotels.querySelector('.popup__type').textContent = 'Дом';
-  }
-  else if (typeHouse === 'palace') {
+  } else {
     hotels.querySelector('.popup__type').textContent = 'Дворец';
   }
 
@@ -133,19 +130,29 @@ var fillingAdvertisement = function (hotel) {
 
   hotels.querySelector('.popup__description').textContent = hotel.offer.description;
 
+  hotels.querySelector('.popup__photo').remove();
 
+  var popupPhotoContainer = hotels.querySelector('.popup__photos');
 
+  for (var j = 0; j < hotel.offer.photos.length; j++) {
+    var newImg = popupPhoto.cloneNode(true);
+    newImg.src = hotel.offer.photos[j];
+    popupPhotoContainer.appendChild(newImg);
+  }
+
+  var popupFeatures = hotels.querySelector('.popup__features');
+
+  for (var k = 0; k < popupFeatures.childElementCount; k++) {
+    popupFeatures.children[k].classList.add('hidden');
+  }
+
+  for (var l = 0; l < hotel.offer.features.length; l++) {
+    var feature = hotel.offer.features[l];
+    var featureNode = hotels.querySelector('.popup__feature--' + feature);
+    featureNode.classList.remove('hidden');
+  }
 
   mapFiltersContainer.prepend(hotels);
+};
 
-}
-var features = popupTemplate.querySelector('.popup__features');
-var feature = features.querySelectorAll('.popup__feature');
-console.log(feature)
-
-for (var i = 0; i < advertisements.length; i++) {
-  fillingAdvertisement(advertisements[i]);
-}
-
-
-
+fillingAdvertisement(advertisements[0]);
