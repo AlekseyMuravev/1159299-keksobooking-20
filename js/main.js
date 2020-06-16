@@ -98,18 +98,58 @@ for (var i = 0; i < advertisements.length; i++) {
   fillinkPinMap(advertisements[i]);
 }
 
-// var fillingAdvertisement = function (hotel) {
-//     var hotels = popupTemplate.cloneNode(true);
-//     hotels.querySelector('.popup__avatar').textContent = hotel.autor.avatar;
-//     hotels.querySelector('.popup__title').textContent = hotel.offer.title;
-//     hotels.querySelector('.popup__text--address').textContent = hotel.offer.address;
-//     hotels.querySelector('.popup__text--price').textContent = hotel.offer.price;
-//     hotels.querySelector('.popup__type').textContent = hotel.offer.type;
-//     hotels.querySelector('.popup__text--capacity').textContent = hotel.offer.rooms + ' комнаты для ' + hotel.offer.guests + ' гостей';
-//     hotels.querySelector('.popup__text--time').textContent = 'Заезд после ' + hotel.offer.checkin + ', выезд до ' + hotel.offer.checkout;
-//     hotels.querySelector('.popup__description').textContent = hotel.offer.description;
-//     hotels.querySelector('.popup__photo').textContent = hotel.offer.photos;
-// }
+// заполнение объявления
+var fillingAdvertisement = function (hotel) {
+  var hotels = popupTemplate.cloneNode(true);
+  hotels.querySelector('.popup__avatar').src = hotel.autor.avatar;
+  hotels.querySelector('.popup__title').textContent = hotel.offer.title;
+  hotels.querySelector('.popup__text--address').textContent = hotel.offer.address;
+  hotels.querySelector('.popup__text--price').textContent = hotel.offer.price + '₽/ночь';
+
+  var typeHouse = hotel.offer.type;
+  if (typeHouse === 'flat') {
+    hotels.querySelector('.popup__type').textContent = 'Квартира';
+  } else if (typeHouse === 'bungalo') {
+    hotels.querySelector('.popup__type').textContent = 'Бунгало';
+  } else if (typeHouse === 'house') {
+    hotels.querySelector('.popup__type').textContent = 'Дом';
+  } else {
+    hotels.querySelector('.popup__type').textContent = 'Дворец';
+  }
+
+  hotels.querySelector('.popup__text--capacity').textContent = hotel.offer.rooms + ' комнаты для ' + hotel.offer.guests + ' гостей';
+  hotels.querySelector('.popup__text--time').textContent = 'Заезд после ' + hotel.offer.checkin + ', выезд до ' + hotel.offer.checkout;
+
+
+  hotels.querySelector('.popup__description').textContent = hotel.offer.description;
+
+  hotels.querySelector('.popup__photo').remove();
+
+  var popupPhotoContainer = hotels.querySelector('.popup__photos');
+
+  for (var j = 0; j < hotel.offer.photos.length; j++) {
+    var newImg = popupPhoto.cloneNode(true);
+    newImg.src = hotel.offer.photos[j];
+    popupPhotoContainer.appendChild(newImg);
+  }
+
+  var popupFeatures = hotels.querySelector('.popup__features');
+
+  for (var k = 0; k < popupFeatures.childElementCount; k++) {
+    popupFeatures.children[k].classList.add('hidden');
+  }
+
+  for (var l = 0; l < hotel.offer.features.length; l++) {
+    var feature = hotel.offer.features[l];
+    var featureNode = hotels.querySelector('.popup__feature--' + feature);
+    featureNode.classList.remove('hidden');
+  }
+
+  mapFiltersContainer.prepend(hotels);
+};
+
+fillingAdvertisement(advertisements[0]);
+
 
 
 var adForm = document.querySelector('.ad-form');
