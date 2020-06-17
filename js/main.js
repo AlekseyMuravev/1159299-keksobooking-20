@@ -94,9 +94,10 @@ var fillinkPinMap = function (pinMap) {
   mapPins.appendChild(pinsMap);
 };
 
-for (var i = 0; i < advertisements.length; i++) {
-  fillinkPinMap(advertisements[i]);
-}
+var popupTemplate = document.querySelector('#card').content.querySelector('.map__card');
+var mapFiltersContainer = document.querySelector('.map__filters-container');
+var popupPhotos = popupTemplate.querySelector('.popup__photos');
+var popupPhoto = popupPhotos.querySelector('.popup__photo');
 
 // заполнение объявления
 var fillingAdvertisement = function (hotel) {
@@ -148,10 +149,6 @@ var fillingAdvertisement = function (hotel) {
   mapFiltersContainer.prepend(hotels);
 };
 
-fillingAdvertisement(advertisements[0]);
-
-
-
 var adForm = document.querySelector('.ad-form');
 var allFieldset = adForm.querySelectorAll('fieldset');
 
@@ -163,6 +160,7 @@ var fieldsetDissablet = function () {
 
 fieldsetDissablet();
 
+// функция разблокировки карты
 var activeForm = function () {
   map.classList.remove('map--faded');
   for (var j = 0; j < allFieldset.length; j++) {
@@ -173,17 +171,51 @@ var activeForm = function () {
 
 var mapPinMain = document.querySelector('.map__pin--main');
 
+var closePopup = function () {
+  var popupCard = document.querySelector('.map__card')
+  var popupClose = popupCard.querySelector('.popup__close');
+
+  popupClose.addEventListener('keydown', function (evt) {
+    evt.preventDefault();
+    popupCard.classList.add('hidden')
+  })
+  popupClose.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    popupCard.classList.add('hidden')
+  })
+  // document.addEventListener('keydown', function (evt) {
+  //   if (evt.key === "Escape") {
+  //     evt.preventDefault();
+  //     popupCard.classList.add('hidden')
+  //   }
+  // })
+}
+
+// событие разблокировки карты мышкой
+
 mapPinMain.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
   if (evt.which === 1) {
     activeForm();
+    fillingAdvertisement(advertisements[0]);
+    for (var i = 0; i < advertisements.length; i++) {
+      fillinkPinMap(advertisements[i]);
+    }
+    closePopup()
   }
 });
 
+
+// событие разблокировки карты клавиатурой
 mapPinMain.addEventListener('keydown', function (evt) {
   evt.preventDefault();
   if (evt.key === 'Enter') {
     activeForm();
+    fillingAdvertisement(advertisements[0]);
+    for (var i = 0; i < advertisements.length; i++) {
+      fillinkPinMap(advertisements[i]);
+    }
+    closePopup()
   }
 });
 
@@ -227,3 +259,8 @@ roomNumber.addEventListener('change', function () {
 
   capacityFromRooms(roomNumberValue, capacityValue);
 });
+
+
+
+
+
