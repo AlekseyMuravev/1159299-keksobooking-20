@@ -10,6 +10,7 @@
   var WIDTH_MAP = document.querySelector('.map').offsetWidth;
   var WIDTH_MAP_PIN = document.querySelector('.map__pin').offsetWidth;
   var HEIGHT_MAP_PIN = document.querySelector('.map__pin').offsetHeight;
+  var HTML = document.querySelector('html').offsetWidth;
 
   var advertisements = [];
 
@@ -28,11 +29,11 @@
   // создаем объявление
   var createAdvertisement = function (index) {
     var advertisement = {};
-    var autor = {};
+    var author = {};
     var offer = {};
     var location = {};
-    advertisement.autor = autor;
-    autor.avatar = arayAutor(index);
+    advertisement.author = author;
+    author.avatar = arayAuthor(index);
 
     advertisement.location = location;
 
@@ -73,7 +74,7 @@
   }
 
   // число для фотографии
-  var arayAutor = function (index) {
+  var arayAuthor = function (index) {
     return 'img/avatars/user0' + (index + 1) + '.png';
   };
 
@@ -83,5 +84,7 @@
     advertisements: advertisements,
     HEIGHT_MAP_PIN: HEIGHT_MAP_PIN,
     WIDTH_MAP_PIN: WIDTH_MAP_PIN,
+    WIDTH_MAP: WIDTH_MAP,
+    HTML: HTML,
   };
 })();

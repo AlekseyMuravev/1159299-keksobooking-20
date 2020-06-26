@@ -9,7 +9,7 @@
   // заполнение объявления
   var fillingAdvertisement = function (hotel) {
     var hotels = popupTemplate.cloneNode(true);
-    hotels.querySelector('.popup__avatar').src = hotel.autor.avatar;
+    hotels.querySelector('.popup__avatar').src = hotel.author.avatar;
     hotels.querySelector('.popup__title').textContent = hotel.offer.title;
     hotels.querySelector('.popup__text--address').textContent = hotel.offer.address;
     hotels.querySelector('.popup__text--price').textContent = hotel.offer.price + '₽/ночь';
