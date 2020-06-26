@@ -140,11 +140,11 @@
 
         if (startCoords.x >= coodrdsPin.left + marginsMap && startCoords.x <= coodrdsPin.right + marginsMap) {
           mapPinMain.style.left = startCoords.x - marginsMap - window.data.WIDTH_MAP_PIN / 2 + 'px';
-        };
+        }
 
         if (startCoords.y >= coodrdsPin.top && startCoords.y <= coodrdsPin.bottom) {
           mapPinMain.style.top = startCoords.y - window.data.HEIGHT_MAP_PIN / 2 + 'px';
-        };
+        }
       };
 
       var onMouseUp = function (moveEvt) {
