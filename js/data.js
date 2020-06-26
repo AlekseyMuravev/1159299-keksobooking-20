@@ -10,6 +10,7 @@
   var WIDTH_MAP = document.querySelector('.map').offsetWidth;
   var WIDTH_MAP_PIN = document.querySelector('.map__pin').offsetWidth;
   var HEIGHT_MAP_PIN = document.querySelector('.map__pin').offsetHeight;
+  var HTML = document.querySelector('html').offsetWidth;
 
   var advertisements = [];
 
@@ -83,5 +84,7 @@
     advertisements: advertisements,
     HEIGHT_MAP_PIN: HEIGHT_MAP_PIN,
     WIDTH_MAP_PIN: WIDTH_MAP_PIN,
+    WIDTH_MAP: WIDTH_MAP,
+    HTML: HTML,
   };
 })();

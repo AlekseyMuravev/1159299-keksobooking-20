@@ -114,11 +114,13 @@
     openPopupKey(mapPinAll[i], i - 1);
   }
 
+  // перемещение главной метки
+  var marginsMap = (window.data.HTML - window.data.WIDTH_MAP) / 2;
   var coodrdsPin = {
-    left: -mapPinMain.offsetWidth / 2,
-    right: map.offsetWidth - mapPinMain.offsetWidth / 2,
+    left: 0,
+    right: window.data.WIDTH_MAP,
     top: 130,
-    bottom: 630 - mapPinMain.offsetHeight - 16,
+    bottom: 630,
   };
 
   mapPinMain.addEventListener('mousedown', function (evt) {
@@ -131,26 +133,18 @@
 
       var onMouseMove = function (moveEvt) {
         moveEvt.preventDefault();
-        if (mapPinMain.offsetLeft < coodrdsPin.left) {
-          mapPinMain.style.left = parseInt(coodrdsPin.left, 10) + 'px';
-        } else if (mapPinMain.offsetLeft > coodrdsPin.right) {
-          mapPinMain.style.left = coodrdsPin.right + 'px';
-        } else if (mapPinMain.offsetTop < coodrdsPin.top) {
-          mapPinMain.style.top = coodrdsPin.top + 'px';
-        } else if (mapPinMain.offsetTop > coodrdsPin.bottom) {
-          mapPinMain.style.top = coodrdsPin.bottom + 'px';
-        } else {
-          var shift = {
-            x: startCoords.x - moveEvt.pageX,
-            y: startCoords.y - moveEvt.pageY,
-          };
-          startCoords = {
-            x: moveEvt.pageX,
-            y: moveEvt.pageY,
-          };
-          mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
-          mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
-        }
+        startCoords = {
+          x: moveEvt.pageX,
+          y: moveEvt.pageY,
+        };
+
+        if (startCoords.x >= coodrdsPin.left + marginsMap && startCoords.x <= coodrdsPin.right + marginsMap) {
+          mapPinMain.style.left = startCoords.x - marginsMap - window.data.WIDTH_MAP_PIN / 2 + 'px';
+        };
+
+        if (startCoords.y >= coodrdsPin.top && startCoords.y <= coodrdsPin.bottom) {
+          mapPinMain.style.top = startCoords.y - window.data.HEIGHT_MAP_PIN / 2 + 'px';
+        };
       };
 
       var onMouseUp = function (moveEvt) {
