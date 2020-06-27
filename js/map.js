@@ -6,7 +6,6 @@
   var mapPinMain = document.querySelector('.map__pin--main');
   var popupCard = document.querySelector('.map__card');
   var allFieldset = adForm.querySelectorAll('fieldset');
-  popupCard.classList.add('hidden');
 
   // разблокировка карты
   var activeForm = function () {
@@ -16,10 +15,6 @@
     }
 
     window.load.loadData(window.pin.successHandler, window.pin.errorHandler);
-
-    if (popupCard.classList.contains('hidden')) {
-      popupCard.classList.remove('hidden');
-    }
   };
 
   // разблокировка карты мышкой
@@ -38,8 +33,6 @@
   });
 
   // открытие/закрытие попапа
-  var popupClose = document.querySelector('.popup__close');
-
   var onPopupEscPress = function (evt) {
     if (evt.key === 'Escape') {
       evt.preventDefault();
@@ -54,9 +47,9 @@
     popupCard.remove();
   };
 
-  popupClose.addEventListener('click', function () {
-    closePopup();
-  });
+  // popupClose.addEventListener('click', function () {
+  //   closePopup();
+  // });
 
   var openPopup = function (index) {
     if (popupCard) {
@@ -86,6 +79,7 @@
   }
 
   var mapPins = document.querySelector('.map__pins');
+  var popupClose = document.querySelector('.popup__close');
 
   mapPins.addEventListener('mousedown', function (evt) {
     var button = evt.target.closest('button');

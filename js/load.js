@@ -29,9 +29,12 @@
 
     xhr.open('GET', URL);
     xhr.send();
+
   };
 
   window.load = {
     loadData: loadData,
   };
+
+
 })();
