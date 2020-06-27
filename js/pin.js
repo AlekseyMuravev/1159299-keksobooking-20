@@ -14,47 +14,31 @@
     mapPins.appendChild(pinsMap);
   };
 
-  for (var i = 0; i < window.data.advertisements.length; i++) {
-    fillinkPinMap(window.data.advertisements[i]);
-  }
+  var successHandler = function (pinsMap) {
+    var fragment = document.createDocumentFragment();
 
-  // var successHandler = function (pinsMap) {
-  //   var fragment = document.createDocumentFragment();
+    mapPins.appendChild(fragment);
+    for (var i = 0; i < pinsMap.length; i++) {
+      if (pinsMap[i].author.avatar.includes('img/avatars/user0')) {
+        fillinkPinMap(pinsMap[i]);
+      }
+    }
+  };
 
-  //   mapPins.appendChild(fragment);
-  //   for (var i = 0; i < pinsMap.length; i++) {
-  //     if (pinsMap[i].author.avatar.includes('img/avatars/user0')) {
-  //       fillinkPinMap(pinsMap[i])
-  //     }
-  //   }
-  // };
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
 
-  // var errorHandler = function (errorMessage) {
-  //   var node = document.createElement('div');
-  //   node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-  //   node.style.position = 'absolute';
-  //   node.style.left = 0;
-  //   node.style.right = 0;
-  //   node.style.fontSize = '30px';
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
 
-  //   node.textContent = errorMessage;
-  //   document.body.insertAdjacentElement('afterbegin', node);
-  // };
-
-  // window.pin = {
-  //   successHandler: successHandler,
-  //   errorHandler: errorHandler,
-  // }
-
-  // window.load.loadData(window.pin.successHandler, window.pin.errorHandler);
-
-  // window.load.loadData(successHandler, errorHandler);
-
-  var mapPinAll = document.querySelectorAll('.map__pin');
-
-
-
-  for (var i = 1; i < mapPinAll.length; i++) {
-    mapPinAll[i].classList.add('hidden');
-  }
+  window.pin = {
+    successHandler: successHandler,
+    errorHandler: errorHandler,
+  };
 })();

@@ -3,9 +3,7 @@
 (function () {
   var map = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
-  var mapPins = document.querySelector('.map__pins');
   var mapPinMain = document.querySelector('.map__pin--main');
-  var mapPinAll = mapPins.querySelectorAll('.map__pin');
   var popupCard = document.querySelector('.map__card');
   var allFieldset = adForm.querySelectorAll('fieldset');
   popupCard.classList.add('hidden');
@@ -16,10 +14,9 @@
     for (var i = 0; i < allFieldset.length; i++) {
       allFieldset[i].removeAttribute('disabled');
     }
-    adForm.classList.remove('ad-form--disabled');
-    for (var j = 1; j < mapPinAll.length; j++) {
-      mapPinAll[j].classList.remove('hidden');
-    }
+
+    window.load.loadData(window.pin.successHandler, window.pin.errorHandler);
+
     if (popupCard.classList.contains('hidden')) {
       popupCard.classList.remove('hidden');
     }
@@ -40,6 +37,7 @@
     }
   });
 
+  // открытие/закрытие попапа
   var popupClose = document.querySelector('.popup__close');
 
   var onPopupEscPress = function (evt) {
@@ -63,56 +61,49 @@
   var openPopup = function (index) {
     if (popupCard) {
       closePopup();
-      window.card.fillingAdvertisement(window.data.advertisements[index]);
+      window.card.fillingAdvertisement(index);
     } else {
-      window.card.fillingAdvertisement(window.data.advertisements[index]);
+      window.card.fillingAdvertisement(index);
     }
   };
-  var mapFiltersContainer = document.querySelector('.map__filters-container');
 
-  // откртыие попапа мышкой
-  var openPopupMouse = function (element, index) {
-    element.addEventListener('mousedown', function (evt) {
-      evt.preventDefault();
-      popupCard = mapFiltersContainer.querySelector('.map__card');
+  // делегирование клика по кнопкам и открывает попап
+  function clickOnMapPins(evt) {
+    var styleLeft = evt.target.style.left;
+    var styleTop = evt.target.style.top;
 
-      if (evt.which === 1) {
-        openPopup(index);
+    for (var i = 0; i < window.data.advertisements.length; i++) {
+      if (window.data.advertisements[i].offer.title === evt.target.alt || window.data.advertisements[i].location.x + 'px' + ', ' + window.data.advertisements[i].location.y + 'px' === styleLeft + ', ' + styleTop) {
+        openPopup(window.data.advertisements[i]);
+        popupClose = document.querySelector('.popup__close');
+        popupCard = document.querySelector('.map__card');
+        popupClose.addEventListener('click', function () {
+          closePopup();
+        });
+        document.addEventListener('keydown', onPopupEscPress);
       }
-
-      popupClose = document.querySelector('.popup__close');
-      popupCard = mapFiltersContainer.querySelector('.map__card');
-
-      document.addEventListener('keydown', onPopupEscPress);
-      popupClose.addEventListener('click', function () {
-        closePopup();
-      });
-    });
-  };
-
-  // откртыие попапа Enter
-  var openPopupKey = function (element, index) {
-    element.addEventListener('keydown', function (evt) {
-      popupCard = mapFiltersContainer.querySelector('.map__card');
-
-      if (evt.key === 'Enter') {
-        openPopup(index);
-      }
-
-      popupClose = document.querySelector('.popup__close');
-      popupCard = mapFiltersContainer.querySelector('.map__card');
-
-      document.addEventListener('keydown', onPopupEscPress);
-      popupClose.addEventListener('click', function () {
-        closePopup();
-      });
-    });
-  };
-
-  for (var i = 1; i < mapPinAll.length; i++) {
-    openPopupMouse(mapPinAll[i], i - 1);
-    openPopupKey(mapPinAll[i], i - 1);
+    }
   }
+
+  var mapPins = document.querySelector('.map__pins');
+
+  mapPins.addEventListener('mousedown', function (evt) {
+    var button = evt.target.closest('button');
+    if (button) {
+      if (evt.which === 1) {
+        clickOnMapPins(evt);
+      }
+    }
+  });
+
+  mapPins.addEventListener('keydown', function (evt) {
+    var button = evt.target.closest('button');
+    if (button) {
+      if (evt.key === 'Enter') {
+        clickOnMapPins(evt);
+      }
+    }
+  });
 
   // перемещение клавной метки мышкой
   var marginsMap = (window.data.HTML - window.data.WIDTH_MAP) / 2;
@@ -141,11 +132,11 @@
 
         if (startCoords.x >= coodrdsPin.left + marginsMap && startCoords.x <= coodrdsPin.right + marginsMap) {
           mapPinMain.style.left = startCoords.x - marginsMap - window.data.WIDTH_MAP_PIN / 2 + 'px';
-        };
+        }
 
         if (startCoords.y >= coodrdsPin.top && startCoords.y <= coodrdsPin.bottom) {
           mapPinMain.style.top = startCoords.y - window.data.HEIGHT_MAP_PIN / 2 + 'px';
-        };
+        }
       };
 
       var onMouseUp = function (moveEvt) {

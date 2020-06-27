@@ -33,5 +33,5 @@
 
   window.load = {
     loadData: loadData,
-  }
+  };
 })();
