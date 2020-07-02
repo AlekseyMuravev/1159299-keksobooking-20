@@ -110,7 +110,7 @@
   };
 
   form.addEventListener('submit', function (evt) {
-    window.uploadData(new FormData(form), successHandler, errorHandler)
+    window.uploadData(new FormData(form), successHandler, errorHandler);
     evt.preventDefault();
   });
 
