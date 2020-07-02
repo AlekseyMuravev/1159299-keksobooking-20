@@ -69,15 +69,6 @@
     document.addEventListener('keydown', onPopupEscPress);
   };
 
-  var adForm = document.querySelector('.ad-form');
-  var allFieldset = adForm.querySelectorAll('fieldset');
-
-  var fieldsetDissablet = function () {
-    for (var i = 0; i < allFieldset.length; i++) {
-      allFieldset[i].setAttribute('disabled', 'disabled');
-    }
-  };
-
   var closePopup = function () {
     var popupCard = document.querySelector('.map .map__card');
     document.removeEventListener('keydown', onPopupEscPress);
@@ -98,8 +89,6 @@
       closePopup();
     }
   };
-
-  fieldsetDissablet();
 
   window.card = {
     renderCard: renderCard,

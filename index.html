@@ -93,7 +93,7 @@
     <!-- Форма объявления -->
     <section class="notice">
       <h2 class="notice__title">Ваше объявление</h2>
-      <form class="ad-form ad-form--disabled" action="https://javascript.pages.academy/keksobooking" method="post"
+      <form class="ad-form ad-form--disabled" action="https://javascript.pages.academy/keksobooking" method="POST"
         enctype="multipart/form-data" autocomplete="off">
         <fieldset class="ad-form-header">
           <legend class="ad-form-header__title">Ваша фотография (для карты)</legend>
@@ -114,7 +114,7 @@
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="title">Заголовок объявления</label>
           <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио" minlength="30"
-            maxlength="100">
+            maxlength="100" required>
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес</label>
@@ -280,7 +280,8 @@
   <script src="js/card.js"></script>
   <script src="js/map.js"></script>
   <script src="js/main.js"></script>
-  <script src="js/validity.js"></script>
+  <script src="js/upload.js"></script>
+  <script src="js/form.js"></script>
 </body>
 
 </html>

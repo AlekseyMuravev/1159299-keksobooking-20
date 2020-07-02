@@ -7,7 +7,7 @@
 
   var TIMEOUT_IN_MS = 10000;
 
-  var loadData = function (onSuccess, onError) {
+  window.loadData = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
@@ -27,9 +27,5 @@
     xhr.timeout = TIMEOUT_IN_MS;
     xhr.open('GET', URL);
     xhr.send();
-  };
-
-  window.load = {
-    loadData: loadData,
   };
 })();

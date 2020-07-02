@@ -1,14 +1,12 @@
 'use strict';
 
 (function () {
-  // валидация формы
-  var adForm = document.querySelector('.ad-form');
-  var roomNumber = adForm.querySelector('select[name=rooms]');
-  var capacity = adForm.querySelector('select[name=capacity]');
+  var form = document.querySelector('.ad-form');
+  var roomNumber = form.querySelector('select[name=rooms]');
+  var capacity = form.querySelector('select[name=capacity]');
   var capacityValue = parseInt(capacity.value, 10);
   var roomNumberValue = parseInt(roomNumber.value, 10);
 
-  // сравнение значений комнат и гостей
   var capacityFromRooms = function (roomValue, capacitysValue) {
     if (capacitysValue > roomValue) {
       capacity.setCustomValidity('колличество гостей больше, чем комнат');
@@ -37,10 +35,9 @@
     capacityFromRooms(roomNumberValue, capacityValue);
   });
 
-  var typeHotel = adForm.querySelector('select[name=type]');
-  var price = adForm.querySelector('input[name=price]');
+  var typeHotel = form.querySelector('select[name=type]');
+  var price = form.querySelector('input[name=price]');
 
-  // минимальная цена за жилье
   var valuePricefromTypeHotel = function () {
     if (typeHotel.value === 'bungalo') {
       price.value = 0;
@@ -53,7 +50,6 @@
     }
   };
 
-  // оповещение при нарушении цены за жилье
   var validityPrice = function () {
     if (typeHotel.value === 'flat' && price.value < 1000) {
       price.setCustomValidity('минимальная цена 1000');
@@ -79,15 +75,66 @@
     validityPrice();
   });
 
-  var timeIn = adForm.querySelector('select[name=timein]');
-  var timeOut = adForm.querySelector('select[name=timeout]');
-  var fieldsetTime = adForm.querySelector('.ad-form__element--time');
+  var timeIn = form.querySelector('select[name=timein]');
+  var timeOut = form.querySelector('select[name=timeout]');
+  var fieldsetTime = form.querySelector('.ad-form__element--time');
 
-  // время заезда - выезда
   var filterTime = function (evt) {
     timeOut.value = evt.target.value;
     timeIn.value = evt.target.value;
   };
 
   fieldsetTime.addEventListener('change', filterTime);
+
+  var successTemplate = document.querySelector('#success').content
+    .querySelector('.success__message');
+  var main = document.querySelector('main');
+
+  var renderSuccessMessage = function () {
+    var message = successTemplate.cloneNode();
+    main.appendChild(message);
+
+    document.addEventListener('keydown', removeMessage);
+    document.addEventListener('mousedown', removeMessage);
+  };
+
+  var errorTemplate = document.querySelector('#success').content
+    .querySelector('.success__message');
+
+  var renderErrorMessage = function () {
+    var message = errorTemplate.cloneNode();
+    main.appendChild(message);
+
+    // document.addEventListener('keydown', removeMessage);
+    // document.addEventListener('mousedown', removeMessage);
+  };
+
+  form.addEventListener('submit', function (evt) {
+    window.uploadData(new FormData(form), successHandler, errorHandler)
+    evt.preventDefault();
+  });
+
+  var successHandler = function () {
+    window.map.lockMap();
+    form.reset();
+    renderSuccessMessage();
+  };
+
+  var errorHandler = function () {
+    renderErrorMessage();
+  };
+
+  var removeMessage = function (evt) {
+    var successMessage = document.querySelector('.success__message');
+    if (evt.key === 'Escape' || evt.which === 1) {
+      var target = evt.target;
+      if (successMessage.style.left !== target) {
+        successMessage.remove();
+      }
+      document.removeEventListener('keydown', removeMessage);
+      document.removeEventListener('mousedown', removeMessage);
+    }
+  };
 })();
+
+

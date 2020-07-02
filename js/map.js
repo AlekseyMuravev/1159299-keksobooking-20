@@ -2,10 +2,14 @@
 
 (function () {
   var map = document.querySelector('.map');
-  var adForm = document.querySelector('.ad-form');
+  var form = document.querySelector('.ad-form');
   var mapPinMain = document.querySelector('.map__pin--main');
-  var allFieldset = adForm.querySelectorAll('fieldset');
+  var allFieldset = form.querySelectorAll('fieldset');
   var ADDRESS = document.querySelector('input[name=address]');
+
+  for (var i = 0; i < allFieldset.length; i++) {
+    allFieldset[i].setAttribute('disabled', 'disabled');
+  }
 
   var addressFromMainPin = function () {
     var pinMainTop = parseInt(mapPinMain.style.top, 10) + window.data.HEIGHT_MAP_PIN + 16;
@@ -17,9 +21,9 @@
   // разблокировка карты
   var unlockMap = function (evt) {
     if (evt.which === 1 || evt.key === 'Enter') {
-      window.load.loadData(window.data.successHandler, window.data.errorHandler);
+      window.loadData(window.data.successHandler, window.data.errorHandler);
       map.classList.remove('map--faded');
-      adForm.classList.remove('ad-form--disabled');
+      form.classList.remove('ad-form--disabled');
 
       for (var i = 0; i < allFieldset.length; i++) {
         allFieldset[i].removeAttribute('disabled');
@@ -89,4 +93,32 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+
+  var removeCardPin = function () {
+    var card = document.querySelector('.map .map__card');
+    card.remove();
+    var mapPins = document.querySelectorAll('.map .map__pin');
+    for (var i = 1; i < mapPins.length; i++) {
+      var mapPin = mapPins[i];
+      mapPin.remove()
+    }
+  }
+
+  var lockMap = function () {
+    map.classList.add('map--faded');
+    form.classList.add('ad-form--disabled');
+    mapPinMain.addEventListener('mousedown', unlockMap);
+    mapPinMain.addEventListener('keydown', unlockMap);
+    mapPinMain.style.left = window.data.mapPinMainX;
+    mapPinMain.style.top = window.data.mapPinMainY
+    removeCardPin();
+
+    for (var i = 0; i < allFieldset.length; i++) {
+      allFieldset[i].setAttribute('disabled', 'disabled');
+    }
+  };
+
+  window.map = {
+    lockMap: lockMap,
+  }
 })();
