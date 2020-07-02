@@ -10,7 +10,6 @@
   var loadData = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
-
     xhr.addEventListener('load', function () {
       if (xhr.status === StatusCode.OK) {
         onSuccess(xhr.response);
@@ -26,15 +25,11 @@
     });
 
     xhr.timeout = TIMEOUT_IN_MS;
-
     xhr.open('GET', URL);
     xhr.send();
-
   };
 
   window.load = {
     loadData: loadData,
   };
-
-
 })();

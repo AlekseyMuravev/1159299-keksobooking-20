@@ -4,41 +4,43 @@
   var pinTemplate = document.querySelector('#pin').content;
   var mapPins = document.querySelector('.map__pins');
 
-  // функция для рендеринга меток на карте
-  var fillinkPinMap = function (pinMap) {
-    var pinsMap = pinTemplate.cloneNode(true);
-    pinsMap.querySelector('.map__pin').style.left = pinMap.location.x + 'px';
-    pinsMap.querySelector('.map__pin').style.top = pinMap.location.y + 'px';
-    pinsMap.querySelector('img').src = pinMap.author.avatar;
-    pinsMap.querySelector('img').alt = pinMap.offer.title;
-    mapPins.appendChild(pinsMap);
-  };
-
-  var successHandler = function (pinsMap) {
-    var fragment = document.createDocumentFragment();
-
-    mapPins.appendChild(fragment);
-    for (var i = 0; i < pinsMap.length; i++) {
-      if (pinsMap[i].author.avatar.includes('img/avatars/user0')) {
-        fillinkPinMap(pinsMap[i]);
-      }
+  var renderPins = function (advertisements) {
+    for (var i = 0; i < advertisements.length; i++) {
+      var advertisement = advertisements[i];
+      renderPin(advertisement);
     }
   };
 
-  var errorHandler = function () {
-    // var node = document.createElement('div');
-    // node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-    // node.style.position = 'absolute';
-    // node.style.left = 0;
-    // node.style.right = 0;
-    // node.style.fontSize = '30px';
+  var renderPin = function (advertisement) {
+    var pinNode = pinTemplate.cloneNode(true);
+    var pinButton = pinNode.querySelector('.map__pin');
 
-    // node.textContent = errorMessage;
-    // document.body.insertAdjacentElement('afterbegin', node);
+    pinButton.style.left = advertisement.location.x + 'px';
+    pinButton.style.top = advertisement.location.y + 'px';
+
+    var pinImg = pinNode.querySelector('img');
+
+    pinImg.src = advertisement.author.avatar;
+    pinImg.alt = advertisement.offer.title;
+
+    pinButton.addEventListener('mousedown', function (evt) {
+      clickOnMapPin(advertisement, evt);
+    });
+
+    pinButton.addEventListener('keydown', function (evt) {
+      clickOnMapPin(advertisement, evt);
+    });
+
+    mapPins.appendChild(pinNode);
   };
 
+  function clickOnMapPin(advertisement, evt) {
+    if (evt.which === 1 || evt.key === 'Enter') {
+      window.card.openPopup(advertisement);
+    }
+  }
+
   window.pin = {
-    successHandler: successHandler,
-    errorHandler: errorHandler,
+    renderPins: renderPins,
   };
 })();
